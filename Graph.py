@@ -91,7 +91,3 @@ class Graph:
         else:
             raise AttributeError()
         
-        
-        
-        
-        
