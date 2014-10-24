@@ -57,8 +57,8 @@ class Node:
     def __ne__(self, other):
         return not self.__eq__(other)
         
-    def __hash__():
-        pass
+#    def __hash__():
+#        pass
 
 class Edge:
     """
@@ -92,8 +92,8 @@ class Graph:
     """
     
     def __init__(self):
-        self.nodes = set()
-        self.edges = set()
+        self.nodes = frozenset()
+        self.edges = frozenset()
     
     def add_node(self, node):
         if isinstance(node, Node):
@@ -121,12 +121,14 @@ class Graph:
         Method to build the graph object from input.txt
         """
         
-        if not path:
+        if not path or not os.path.exists(os.path.join(os.getcwd(), 'input.txt')):
             path = os.path.join(os.getcwd(), 'input.txt')
+        else: 
+            raise IOError('No input.txt file.')
         
         with open(path, 'r') as input:
             N = None # Number of nodes
-            M = None  # Number of nodes
+            M = None  # Number of edges
             row = 0 # Index of the row we are reading in our file. Incremented line after line.            
             for line in input:
                 parsed = line.split()
