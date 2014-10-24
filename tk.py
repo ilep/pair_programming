@@ -27,3 +27,6 @@ app = Application()
 app.master.title('Kruskal Algorithm')
 app.mainloop()
         
+    
+    
+#from Graph import Node, Edge, Graph

@@ -56,9 +56,12 @@ class Node:
             
     def __ne__(self, other):
         return not self.__eq__(other)
-        
-#    def __hash__():
-#        pass
+
+    def __str__(self):
+        return "Node " + str(self.index)+ " | x= " +str(self.x) + ", y= " +str(self.y) 
+            
+    def __hash__(self):
+        return hash((self.x, self.y))
 
 class Edge:
     """
@@ -92,8 +95,8 @@ class Graph:
     """
     
     def __init__(self):
-        self.nodes = frozenset()
-        self.edges = frozenset()
+        self.nodes = set()
+        self.edges = set()
     
     def add_node(self, node):
         if isinstance(node, Node):
@@ -132,6 +135,8 @@ class Graph:
             row = 0 # Index of the row we are reading in our file. Incremented line after line.            
             for line in input:
                 parsed = line.split()
+                print type(parsed)
+                print parsed                
                 if len(parsed) == 1: # Line define N = number of nodes or M = number of edges
                     if not N:
                         N = int(parsed[0])
@@ -147,8 +152,6 @@ class Graph:
                         index1 = int(parsed[0])
                         index2 = int(parsed[1])
                         self.add_edge( Edge(self._get_node(index1), self._get_node(index2)) ) # Lengths of edges as weights
-                print type(parsed)
-                print parsed
                 row = row + 1 # Next line...
     
     def _sort_edges(self):
@@ -167,3 +170,4 @@ class Graph:
 
 g = Graph()
 g._construct_graph()
+print(list(g.nodes)[0])
