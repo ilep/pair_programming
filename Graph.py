@@ -33,6 +33,7 @@ Algorithme de calcul d'arbre couvrant de poid min
 #-----------------------------------------------
 
 import math
+import os
 
 class Node:
     """
@@ -55,7 +56,9 @@ class Node:
             
     def __ne__(self, other):
         return not self.__eq__(other)
-
+        
+    def __hash__():
+        pass
 
 class Edge:
     """
@@ -97,12 +100,54 @@ class Graph:
             self.nodes.add(node)
         else:
             raise AttributeError()
-    
+            
     def add_edge(self, edge):
         if isinstance(edge, Edge):
             self.edges.add(edge)
         else:
             raise AttributeError()
+
+    def _get_node(self, index):
+        """
+        Returns a node given its index.
+        """
+        list_nodes = list(self.nodes)
+        for node in list_nodes:
+            if index == node.index:
+                return node
+
+    def _construct_graph(self, path = None):
+        """
+        Method to build the graph object from input.txt
+        """
+        
+        if not path:
+            path = os.path.join(os.getcwd(), 'input.txt')
+        
+        with open(path, 'r') as input:
+            N = None # Number of nodes
+            M = None  # Number of nodes
+            row = 0 # Index of the row we are reading in our file. Incremented line after line.            
+            for line in input:
+                parsed = line.split()
+                if len(parsed) == 1: # Line define N = number of nodes or M = number of edges
+                    if not N:
+                        N = int(parsed[0])
+                    else: 
+                        M = int(parsed[0])
+                else: # Line define a Node (x, y) or an Edge (index_node1, index_node2)
+                    if row <= N: # If line define a node
+                        x = int(parsed[0])
+                        y = int(parsed[1])
+                        index = row
+                        self.add_node( Node(x, y, index) )
+                    else: # Else line define an edge
+                        index1 = int(parsed[0])
+                        index2 = int(parsed[1])
+                        self.add_edge( Edge(self._get_node(index1), self._get_node(index2)) ) # Lengths of edges as weights
+                print type(parsed)
+                print parsed
+                row = row + 1 # Next line...
     
     def _sort_edges(self):
         """
@@ -118,16 +163,5 @@ class Graph:
     def kruskal(self):
         pass               
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+g = Graph()
+g._construct_graph()
