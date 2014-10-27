@@ -69,18 +69,18 @@ class Edge:
     """
     
     def __init__(self, node1, node2, weight = None):
-        if isinstance(node1, Node) and isinstance(node2, Node) and isinstance(weight, float):
+        if isinstance(node1, Node) and isinstance(node2, Node):
             if node1 != node2:
                 self.node1 = node1
                 self.node2 = node2
-                if weight is not None:
+                if weight is not None and isinstance(weight, float):
                     self.weight = weight
                 else:
-                    self.weight = self._compute_length(self)
+                    self.weight = self._compute_length()
             else:
                 raise ValueError()
         else:
-            raise AttributeError()
+            raise AttributeError('error during init Edge')
 
     def _compute_length(self):
         """
@@ -88,7 +88,13 @@ class Edge:
         """
         return math.sqrt( pow(self.node1.x - self.node2.x, 2) + pow(self.node1.y - self.node2.y, 2) )
 
+    def __hash__(self): 
+        return hash((self.node1, self.node2))
 
+    def __str__(self):
+        return "Edge between (" + str(self.node1) + ") AND (" + str(self.node2) + "), weight = " + str(self.weight)
+        
+        
 class Graph:
     """
     This class represents the graph
@@ -108,7 +114,7 @@ class Graph:
         if isinstance(edge, Edge):
             self.edges.add(edge)
         else:
-            raise AttributeError()
+            raise AttributeError('error during add_edge')
 
     def _get_node(self, index):
         """
@@ -134,9 +140,7 @@ class Graph:
             M = None  # Number of edges
             row = 0 # Index of the row we are reading in our file. Incremented line after line.            
             for line in input:
-                parsed = line.split()
-                print type(parsed)
-                print parsed                
+                parsed = line.split()         
                 if len(parsed) == 1: # Line define N = number of nodes or M = number of edges
                     if not N:
                         N = int(parsed[0])
@@ -151,7 +155,12 @@ class Graph:
                     else: # Else line define an edge
                         index1 = int(parsed[0])
                         index2 = int(parsed[1])
-                        self.add_edge( Edge(self._get_node(index1), self._get_node(index2)) ) # Lengths of edges as weights
+                        node1 = self._get_node(index1)
+                        node2 = self._get_node(index2)
+                        try:
+                            self.add_edge(Edge(node1, node2)) # Lengths of edges as weights
+                        except AttributeError, e:
+                            print e
                 row = row + 1 # Next line...
     
     def _sort_edges(self):
@@ -164,10 +173,25 @@ class Graph:
             list_edges = list(self.edges)
             list_edges.sort(key=lambda x: x.weight, reverse=True)
             self.edges = set(list_edges)
+
+    def __str__(self):
+        str_graph = '------------------------------------------\n'
+        str_graph = str_graph +'Il y a ' + str(len(self.edges)) + ' edges \n' 
+        str_graph = str_graph + '------------------------------------------\n'
+        COUNT = 0        
+        for edge in list(self.edges): 
+            str_graph = str_graph + str(COUNT) + " - " + str(edge) + '\n'
+            COUNT = COUNT + 1
+        return str_graph
                 
     def kruskal(self):
         pass               
 
+
 g = Graph()
 g._construct_graph()
-print(list(g.nodes)[0])
+print(g)
+g._sort_edges()
+print(g)
+#for i in range(len(g.nodes)):
+#    print(list(g.nodes)[i])
