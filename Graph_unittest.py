@@ -8,7 +8,7 @@ Tests:
 """
 
 import unittest
-from Graph import Node, Edge
+from Graph import Node, Edge, Graph
 
 
 class NodeTestCase(unittest.TestCase):
@@ -83,7 +83,29 @@ class EdgeTestCase(unittest.TestCase):
 
 
 class GraphTestCase(unittest.TestCase):
-    pass  # TODO : ajouter les différents tests du Grahp
+    
+    def test_raise_attribute_error_if_argument_is_not_a_node(self):
+        """
+        On test qu'une erreur est jetée lorsque l'argument de add_node n'est pas un Node.
+        """
+
+        with self.assertRaises(AttributeError):
+            node = "hey"
+            graph = Graph()
+            
+            graph.add_node(node)
+    
+    def test_raise_value_error_if_node_already_in_graph(self):
+        """
+        On test qu'une erreur est jetée lorsque le node est déjà dans le graph.
+        """
+
+        with self.assertRaises(ValueError):
+            node1 = Node(3, 5)
+            node2 = Node(3, 5)
+            graph = Graph()
+            graph.add_node(node1)
+            graph.add_node(node2)
 
 
 if __name__ == '__main__':
