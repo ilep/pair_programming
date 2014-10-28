@@ -5,6 +5,8 @@ Created on Tue Oct 28 11:21:38 2014
 @author: ivan lepoutre
 """
 
+from Graph import Graph
+
 class KruskalAlgorithm:
     
     
@@ -19,23 +21,41 @@ class KruskalAlgorithm:
         """
         
         if not self.graph.edges:
-            raise ValueError('the graph has no edge.')
+            raise ValueError('The graph has no edge.')
         else:
-            return self.graph.edges.sort()
+            return sorted(self.graph.edges, key=lambda x: x.weight)
     
     def __make_sets(self):
         nodes_sets = {}        
         for node in self.graph.nodes:
             nodes_sets[node.index] = set([node])
-        
+        return nodes_sets
+
+    def print_set(self, node):
+        string = "Set of Node " + str(node.index) + " : "
+        for node in list(self.nodes_sets[node.index]):
+            string = string + str(node.index) + " - "
+        print string
     
     def kruskal(self):
         """
         Computes kruskal algorithm on graph. Returns minimal spanning tree A.
         """
         
-        A = graph() # Minimal spanning tree.       
+        A = Graph() # Minimal spanning tree.       
         for edge in self.sorted_edges:
-                        
-            print 'hey'
-            
+            print '----------------------------------------'            
+            print edge
+            self.print_set(edge.node1)
+            self.print_set(edge.node2)
+            print self.nodes_sets[edge.node1.index]
+            print self.nodes_sets[edge.node2.index]
+            print self.nodes_sets[edge.node1.index].intersection(self.nodes_sets[edge.node1.index])
+            print '----------------------------------------'
+            if not self.nodes_sets[edge.node1.index] & self.nodes_sets[edge.node1.index]: 
+                A.add_edge(edge)
+                union = self.nodes_sets[edge.node1.index] | self.nodes_sets[edge.node1.index]
+                self.nodes_sets[edge.node1.index] = union
+                self.nodes_sets[edge.node1.index] = union                
+                print A
+        return A

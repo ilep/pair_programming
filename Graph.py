@@ -59,7 +59,9 @@ class Node:
 
     def __str__(self):
         return "Node " + str(self.index)+ " | x= " +str(self.x) + ", y= " +str(self.y) 
-            
+
+    def __hash__(self):
+        return hash((self.x, self.y))            
 
 class Edge:
     """
@@ -78,7 +80,7 @@ class Edge:
             else:
                 raise ValueError()
         else:
-            raise AttributeError('error during init Edge')
+            raise AttributeError('Error during init Edge')
 
     def _compute_length(self):
         """
@@ -117,7 +119,7 @@ class Graph:
             else: 
                 raise ValueError('Cannot insert an edge that is already in graph')
         else:
-            raise AttributeError('error during add_edge')
+            raise AttributeError('Error during add_edge')
 
     def _get_node(self, index):
         """
@@ -137,5 +139,3 @@ class Graph:
             COUNT = COUNT + 1
         return str_graph
                               
-
-
