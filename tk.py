@@ -6,27 +6,35 @@ Created on Fri Oct 24 13:54:55 2014
 @author: ivan lepoutre
 """
 
+# http://zetcode.com/gui/tkinter/introduction/
 
-import Tkinter as tk
-
-
-
-class Application(tk.Frame):
-    def __init__(self, master = None):
-        tk.Frame.__init__(self, master, background = 'white')
-        self.grid()
-        self.createWidgets()
-    
-    def createWidgets(self):
-        self.quitButton = tk.Button(self, text= 'Quit', command = self.quit)
-        self.quitButton.grid()
+from Tkinter import Tk, Frame, BOTH
 
 
 
-app = Application()
-app.master.title('Kruskal Algorithm')
-app.mainloop()
+class MyFrame(Frame):
+  
+    def __init__(self, parent):
+        Frame.__init__(self, parent, background="white")   
+         
+        self.parent = parent
         
+        self.initUI()
     
-    
-#from Graph import Node, Edge, Graph
+    def initUI(self):        
+        sw = self.parent.winfo_screenwidth()
+        sh = self.parent.winfo_screenheight()
+        self.parent.title("Kruskal Live!")
+        self.pack(fill=BOTH, expand=1)
+        
+
+def main():
+  
+    root = Tk()
+    root.geometry("750x550+300+300")
+    main_frame = MyFrame(root)
+    root.mainloop()  
+
+
+if __name__ == '__main__':
+    main()
