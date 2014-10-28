@@ -42,20 +42,13 @@ class KruskalAlgorithm:
         Computes kruskal algorithm on graph. Returns minimal spanning tree A.
         """
         
-        A = Graph() # Minimal spanning tree.       
+        A = Graph() # Minimal spanning tree.   
+    
         for edge in self.sorted_edges:
-            print '----------------------------------------'            
-            print edge
-            self.print_set(edge.node1)
-            self.print_set(edge.node2)
-            print self.nodes_sets[edge.node1.index]
-            print self.nodes_sets[edge.node2.index]
-            print self.nodes_sets[edge.node1.index].intersection(self.nodes_sets[edge.node1.index])
-            print '----------------------------------------'
-            if not self.nodes_sets[edge.node1.index] & self.nodes_sets[edge.node1.index]: 
+            if not self.nodes_sets[edge.node1.index] & self.nodes_sets[edge.node2.index]: 
                 A.add_edge(edge)
-                union = self.nodes_sets[edge.node1.index] | self.nodes_sets[edge.node1.index]
+                union = self.nodes_sets[edge.node1.index] | self.nodes_sets[edge.node2.index]
                 self.nodes_sets[edge.node1.index] = union
-                self.nodes_sets[edge.node1.index] = union                
-                print A
+                self.nodes_sets[edge.node2.index] = union                
+                #print A
         return A
